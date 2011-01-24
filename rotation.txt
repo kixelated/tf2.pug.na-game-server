@@ -16,4 +16,4 @@ cp_stark_b2
 cp_warmfront
 cp_waste
 ctf_turbine_pro_b1
-
+koth_viaduct_summer
