@@ -1,0 +1,87 @@
+"Phrases"
+{
+	"Vote Nextmap"
+	{
+		"pl"		"Głosuj na następną mapę!"
+	}
+
+	"Runoff Vote Nextmap"
+	{
+		"pl"		"Wybierz ponownie!"
+	}
+
+	"Nextmap Voting Started"
+	{
+		"pl"		"{lightgreen}Rozpoczęto głosowanie na następną mapę."
+	}
+
+	"Nextmap Voting Finished"
+	{
+		"pl"		"{default}Głosowanie na mapę zostało {lightgreen}zakończone. {default}Następną mapą będzie {green}{1}{default}. (Otrzymała {green}{2} {default}procent {default}z {green}{3} {default}głosów) "
+	}
+
+	"Current Map Extended"
+	{
+		"pl"		"{default}Aktualna mapa została {lightgreen}przedłużona{default}. (Otrzymała {green}{1} {default}procent z {green}{2} {default}głosów)"
+	}
+
+	"Extend Map"
+	{
+		"pl"		"Przedłuż bieżącą mapę"
+	}
+
+	"Dont Change"
+	{
+		"pl"		"Nie Zmieniaj"
+	}
+
+	"Current Map Stays"
+	{
+		"pl"		"{default}Aktualna mapa będzie {lightgreen}kontynuowana!{default} (Otrzymano {green}{1} {default}procent {default}z {green}{2} {default}głosów)"
+	}
+
+	"Changed Next Map"
+	{
+		"pl"		"Zmieniono następną mapę na: \"{1}\"."
+	}
+
+	"Number Of Votes"
+	{
+		"pl"		"Otrzymane głosy"
+	}
+
+	"Custom"
+	{
+		"pl"		"{1} (Niestandardowa)"
+	}
+
+	"Revote Is Needed"
+	{
+		"pl"		"Żadna mapa nie otrzymała przynajmniej {1}%%%% głosów.\nWięc która mapa jest zwycięzcą? Trzeba zagłosować ponownie!"
+	}
+
+	"Revote Warning"
+	{
+		"pl"		"Ponowne głosowanie rozpocznie się za: {1}s\nTym razem się już zdecydujcie ;-)"
+	}
+
+	"Vote Warning"
+	{
+		"pl"		"UWAGA!!! Głosowanie na następną mapę rozpocznie się za: {1}s"
+	}
+
+	"Line One"
+	{
+		"pl"		"Zastanów się na której mapie chcesz grać..."
+	}
+
+	"Line Two"
+	{
+		"pl"		"...wpisując !revote możesz zmienić swój głos."
+	}
+	
+	"Vote Progress"
+	{
+		"pl"		"\n{1}. {2} - {3} ({4}%%%%)"
+	}
+}

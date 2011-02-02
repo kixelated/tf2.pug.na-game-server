@@ -1,0 +1,96 @@
+"Phrases"
+{
+	"Vote Nextmap"
+	{
+		"en"		"Vote for the next map!"
+	}	
+
+	"Runoff Vote Nextmap"
+	{
+		"en"		"Run Off Vote for the next map!"
+	}
+
+	"Nextmap Voting Started"
+	{
+		"en"		"{lightgreen}Voting for next map has started."
+	}	
+
+	"Nextmap Voting Finished"
+	{
+		"#format"	"{1:s},{2:i},{3:i}"
+		"en"		"{default}Map voting has {lightgreen}finished. The next map will be {green}{1}{default}. (Received {green}{2}%% {default}of {green}{3} {default}votes)"
+	}
+
+	"Current Map Extended"
+	{
+		"#format"	"{1:i},{2:i}"
+		"en"		"{default}The current map has been {lightgreen}extended{default}. (Received {green}{1}%% {default}of {green}{2} {default}votes)"
+	}
+	
+	"Extend Map"
+	{
+		"en"		"Extend Current Map"
+	}
+
+	"Dont Change"
+	{
+		"en"		"Don't Change"
+	}
+
+	"Current Map Stays"
+	{
+		"#format"	"{1:i},{2:i}"
+		"en"		"{default}Current map {lightgreen}continues! {default}The Vote has spoken! (Received {green}{1}%% {default}of {green}{2} {default}votes)"
+	}
+
+	"Changed Next Map"
+	{
+		"#format"	"{1:s}"
+		"en"		"Changed nextmap to \"{1}\"."	
+	}
+
+	"Number Of Votes"
+	{
+		"en"		"Number of votes"
+	}
+
+	"Custom"
+	{
+		"#format"	"{1:s}"
+		"en"		"{1} (Custom)"
+	}
+
+	"Revote Is Needed"
+	{
+		"#format"	"{1:i}"
+		"en"		"Neither map has not received more than {1}%%%% of votes.\nSo, with map is a winner? Revote is needed!"
+	}
+
+	"Revote Warning"
+	{
+		"#format"	"{1:i}"
+		"en"		"RunOff vote will start in: {1}s \nThis time one map must win ;-)"
+	}
+
+	"Vote Warning"
+	{
+		"#format"	"{1:i}"
+		"en"		"Warning! Vote for next map will start in: {1}s"
+	}
+
+	"Line One"
+	{
+		"en"		"Consider which map you want to play..."
+	}
+
+	"Line Two"
+	{
+		"en"		"...and don't hit buttons thoughtlessly ;-)"
+	}
+
+	"Vote Progress"
+	{
+		"#format"	"{1:i},{2:s},{3:i},{4:i}"
+		"en"		"\n{1}. {2} - {3} ({4}%%%%)"
+	}
+}
