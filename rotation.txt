@@ -1,6 +1,6 @@
 cp_badlands
 cp_coldfront
-cp_granary_beta2
+cp_granary
 cp_gravelpit
 cp_freight_final1
 cp_yukon_final
