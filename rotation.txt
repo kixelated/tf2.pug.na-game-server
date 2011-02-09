@@ -12,6 +12,9 @@ koth_ashville_rc1
 cp_bazillion_b18a
 cp_follower
 cp_mainline_rc6
+cp_stark_b2
 cp_warmfront
 cp_waste
-koth_viaduct_summer
+ctf_turbine_pro_b1
+cp_sdnaldab
+cp_yranarg
