@@ -1,7 +1,6 @@
 cp_badlands
 cp_coldfront
 cp_granary
-cp_gravelpit
 cp_freight_final1
 cp_yukon_final
 koth_viaduct
@@ -9,7 +8,7 @@ cp_gullywash_imp3
 cp_obscure_final
 cp_snakewater_b11
 koth_ashville_rc1
-cp_bazillion_b18a
+cp_bazillion_b19
 cp_follower
 cp_mainline_rc6
 cp_stark_b2
