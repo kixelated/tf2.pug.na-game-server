@@ -7,12 +7,12 @@
 
 	"Runoff Vote Nextmap"
 	{
-		"en"		"Run Off Vote for the next map!"
+		"en"		"Run off vote for the next map!"
 	}
 
 	"Nextmap Voting Started"
 	{
-		"en"		"{lightgreen}Voting for next map has started."
+		"en"		"{lightgreen}Voting for the next map has started."
 	}	
 
 	"Nextmap Voting Finished"
@@ -40,7 +40,7 @@
 	"Current Map Stays"
 	{
 		"#format"	"{1:i},{2:i}"
-		"en"		"{default}Current map {lightgreen}continues! {default}The Vote has spoken! (Received {green}{1}%% {default}of {green}{2} {default}votes)"
+		"en"		"{default}Current map {lightgreen}continues! {default}The voters have spoken! (Received {green}{1}%% {default}of {green}{2} {default}votes)"
 	}
 
 	"Changed Next Map"
@@ -63,19 +63,19 @@
 	"Revote Is Needed"
 	{
 		"#format"	"{1:i}"
-		"en"		"Neither map has not received more than {1}%%%% of votes.\nSo, with map is a winner? Revote is needed!"
+		"en"		"Neither map has received more than {1}%%%% of votes.\nRevote is required."
 	}
 
 	"Revote Warning"
 	{
 		"#format"	"{1:i}"
-		"en"		"RunOff vote will start in: {1}s \nThis time one map must win ;-)"
+		"en"		"Runoff vote will start in: {1}s \nThis time, one map must win."
 	}
 
 	"Vote Warning"
 	{
 		"#format"	"{1:i}"
-		"en"		"Warning! Vote for next map will start in: {1}s"
+		"en"		"Warning! Voting for next map will start in: {1}s"
 	}
 
 	"Line One"
@@ -85,7 +85,7 @@
 
 	"Line Two"
 	{
-		"en"		"...and don't hit buttons thoughtlessly ;-)"
+		"en"		"...and don't hit buttons randomly"
 	}
 
 	"Vote Progress"
