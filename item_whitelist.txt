@@ -19,7 +19,7 @@
 
   "The Sandman"                 "0"
   "Mad Milk"                    "0"
-  "Battalion's Backup"          "0"
+  "The Battalion's Backup"      "0"
   "The Ullapool Caber"          "0"
   "Gloves of Running Urgently"  "0"
   "Fists of Steel"              "0"
