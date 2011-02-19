@@ -9,4 +9,5 @@ cp_obscure_final
 cp_snakewater_rc1
 koth_ashville_rc1
 cp_mainline_rc6
+cp_warmfront
 ctf_turbine_pro_b1
