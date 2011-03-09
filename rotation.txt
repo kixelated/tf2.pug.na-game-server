@@ -6,10 +6,9 @@ cp_yukon_final
 koth_viaduct
 cp_gullywash_pro
 cp_obscure_final
-cp_snakewater_rc1
+cp_snakewater_rc2
 koth_ashville_rc1
 cp_bazillion_rc1
 cp_mainline_rc6
-cp_snakewater_prerc2
 cp_warmfront
 ctf_turbine_pro_b1
