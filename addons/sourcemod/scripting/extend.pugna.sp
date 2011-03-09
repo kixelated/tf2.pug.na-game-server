@@ -85,7 +85,7 @@ public Action:Event_PlayerSay(Handle:event, const String:name[], bool:dontBroadc
   }
 
   if (StrContains(userText, "!cancel") == 0 && (client_team == 2 || client_team == 3)) { 
-    if ((GetTime() - lastExtend) <= cancelThreshold) {
+    if ((GetTime() - lastExtend) <= cancelThreshold && !extendCancel) {
       if (cancelMatch()) {
         PrintToChatAll("Extend canceled by %s", client_name);
       }
