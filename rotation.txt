@@ -3,6 +3,7 @@ cp_coldfront
 cp_granary
 cp_freight_final1
 cp_yukon_final
+koth_badlands
 koth_viaduct
 cp_gullywash_pro
 cp_obscure_final
