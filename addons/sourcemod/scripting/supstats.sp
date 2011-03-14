@@ -41,7 +41,6 @@ public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
 	new patient = GetClientOfUserId(patientId);
 	new healer = GetClientOfUserId(healerId);
 	new amount = GetEventInt(event, "amount");
-	PrintToChatAll("Healed: %d", amount);
 	
 	GetClientAuthString(patient, patientSteamId, sizeof(patientSteamId));
 	GetClientName(patient, patientName, sizeof(patientName));
@@ -65,7 +64,7 @@ public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
 
 public Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)
 {
-    if(live != 1)
+	if(live != 1)
 		return;
 
 	decl String:clientname[32];
