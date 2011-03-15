@@ -27,11 +27,8 @@ public OnPluginStart()
 
 public Event_ItemPickup(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	//if(live != 1)
-		//return;
-	// Picked up medkit_medium.
- //Picked up ammopack_small.
- //Picked up medkit_small.
+	if(live != 1)
+		return;
 
 	decl String:playerName[32];
 	decl String:playerSteamId[64];
@@ -83,15 +80,15 @@ public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
 	healerTeam = GetPlayerTeam(GetClientTeam(healer));
 	
 	LogToGame("\"%s<%d><%s><%s>\" triggered \"healed\" %d against \"%s<%d><%s><%s>\"",
-                healerName,
-                healerId,
-                healerSteamId,
-                healerTeam,
-                amount,
-				patientName,
-                patientId,
-                patientSteamId,
-                patientTeam);
+		healerName,
+		healerId,
+		healerSteamId,
+		healerTeam,
+		amount,
+		patientName,
+		patientId,
+		patientSteamId,
+		patientTeam);
 }
 
 public Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)
