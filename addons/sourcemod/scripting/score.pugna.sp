@@ -12,7 +12,7 @@ public Plugin:myinfo = {
 
 // Code
 public OnPluginStart() {
-  RegConsoleCmd("tf_score", Command_TFScore);
+  RegConsoleCmd("score", Command_TFScore);
 }
 
 public Action:Command_TFScore(client, args) {
