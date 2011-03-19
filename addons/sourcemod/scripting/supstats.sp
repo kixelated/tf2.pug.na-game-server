@@ -1,12 +1,12 @@
 #include <sourcemod>
 
 new live = 0;
-
+new bool:isPaused
 public Plugin:myinfo =
 {
 	name = "Supplemental Stats",
 	author = "Jean-Denis Caron",
-	description = "Adds per player damage done and heals received stats.",
+	description = "Logs additional information about the game.",
 	version = SOURCEMOD_VERSION,
 	url = "https://github.com/qpingu/tf2.pug.na-game-server"
 };
@@ -23,6 +23,19 @@ public OnPluginStart()
 	HookEvent("player_healed", Event_PlayerHealed);
 	HookEvent("teamplay_round_start", Event_RoundStart);
 	HookEvent("teamplay_win_panel", Event_WinPanel);
+	AddCommandListener(Listener_Pause, "pause");
+}
+
+public Action:Listener_Pause(client, const String:command[], argc)
+{
+	isPaused = !isPaused;
+
+	if (isPaused)
+		LogToGame("World triggered \"Game_Paused\"");
+	else
+		LogToGame("World triggered \"Game_Unpaused\"");
+
+	return Plugin_Continue;
 }
 
 public Event_ItemPickup(Handle:event, const String:name[], bool:dontBroadcast)
