@@ -55,15 +55,12 @@ public Event_ItemPickup(Handle:event, const String:name[], bool:dontBroadcast)
 	playerTeam = GetPlayerTeam(GetClientTeam(player));
 	GetEventString(event, "item", item, sizeof(item))
 	
-	if ((strcmp(item, "medkit_medium") == 0) || (strcmp(item, "medkit_small") == 0))
-	{
-		LogToGame("\"%s<%d><%s><%s>\" picked up item \"%s\"",
-			playerName,
-			playerId,
-			playerSteamId,
-			playerTeam,
-			item);
-	}
+	LogToGame("\"%s<%d><%s><%s>\" picked up item \"%s\"",
+		playerName,
+		playerId,
+		playerSteamId,
+		playerTeam,
+		item);
 }
 
 public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
