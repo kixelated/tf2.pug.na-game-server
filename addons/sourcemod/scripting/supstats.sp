@@ -79,16 +79,16 @@ public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
 	patientTeam = GetPlayerTeam(GetClientTeam(patient));
 	healerTeam = GetPlayerTeam(GetClientTeam(healer));
 	
-	LogToGame("\"%s<%d><%s><%s>\" triggered \"healed\" %d against \"%s<%d><%s><%s>\"",
+	LogToGame("\"%s<%d><%s><%s>\" triggered \"healed\" against \"%s<%d><%s><%s>\" (healing \"%d\")",
 		healerName,
 		healerId,
 		healerSteamId,
 		healerTeam,
-		amount,
 		patientName,
 		patientId,
 		patientSteamId,
-		patientTeam);
+		patientTeam,
+		amount);
 }
 
 public Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)
@@ -109,7 +109,7 @@ public Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)
 		GetClientAuthString(attacker, steamid, sizeof(steamid));
 		GetClientName(attacker, clientname, sizeof(clientname));
 		team = GetPlayerTeam(GetClientTeam(attacker));
-		LogToGame("\"%s<%d><%s><%s>\" triggered \"damage\" %d",
+		LogToGame("\"%s<%d><%s><%s>\" triggered \"damage\" (damage \"%d\")",
 			clientname,
 			attackerid,
 			steamid,
