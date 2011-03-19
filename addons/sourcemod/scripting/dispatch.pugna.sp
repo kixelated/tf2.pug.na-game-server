@@ -10,7 +10,7 @@ new String:socketData[192];
 // Plugin Info
 public Plugin:myinfo = {
   name = "tf2.pug.na - Bot Dispatcher",
-  author = "Jean-Denis Caron, Luke Curley",
+  author = "Luke Curley",
   description = "Communicates with the bot on #tf2.pug.na, sending sub and endgame messages.",
   version = SOURCEMOD_VERSION,
   url = "http://github.com/qpingu/tf2.pug.na-irc-bot"
@@ -40,10 +40,6 @@ public Action:Event_PlayerSay(Handle:event, const String:name[], bool:dontBroadc
 }
 
 public Event_TeamplayGameOver(Handle:event, const String:name[], bool:dontBroadcast) {
-  gameOver();
-}
-
-public gameOver() {
   decl String:message[192];
 
   new String:blueScore[2];
@@ -75,9 +71,11 @@ public sendDataToBot(String:message[]) {
   StrCat(query, 192, " ");
   StrCat(query, 192, message);
   
+  PrintToChatAll("%s", query);
+  
   new Handle:socket = SocketCreate(SOCKET_TCP, OnSocketError);
   Format(socketData, sizeof(socketData), "%s", query);
-  SocketConnect(socket, OnSocketConnected, OnSocketReceive, OnSocketDisconnected, "bot.tf2pug.org", 50007)
+  SocketConnect(socket, OnSocketConnected, OnSocketReceive, OnSocketDisconnected, "bot2.tf2pug.org", 27030)
 }
 
 public OnSocketConnected(Handle:socket, any:arg){
