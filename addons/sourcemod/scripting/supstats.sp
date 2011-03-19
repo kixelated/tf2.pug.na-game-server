@@ -13,11 +13,9 @@
  *
  */
 #include <sourcemod>
-#include <sdktools>
 
 new live = 0;
-new bool:isPaused
-new String:map[64];
+new bool:isPaused;
 
 public Plugin:myinfo =
 {
@@ -28,12 +26,6 @@ public Plugin:myinfo =
 	url = "https://github.com/qpingu/tf2.pug.na-game-server"
 };
 
-public OnMapStart()
-{
-	live = -1;
-	GetCurrentMap(map, sizeof(map));
-}
-
 public OnPluginStart()
 {
 	HookEvent("item_pickup", Event_ItemPickup);
@@ -42,41 +34,6 @@ public OnPluginStart()
 	HookEvent("teamplay_round_start", Event_RoundStart);
 	HookEvent("teamplay_win_panel", Event_WinPanel);
 	AddCommandListener(Listener_Pause, "pause");
-	RegConsoleCmd("tournament_info", Command_TournamentInfo, "Gets the remaining time and score for the current tournament");
-}
-
-public Action:Command_TournamentInfo(client, args)
-{
-	if (live != 1)
-	{
-		ReplyToCommand(client, "Tournament is not live");
-		return Plugin_Handled;
-	}
-
-	new blueScore = GetTeamScore(3);
-	new redScore = GetTeamScore(2);
-	new clientCount = GetClientCount(false);
-	decl String:finalOutput[1024];
-	finalOutput[0] = 0;
-
-	new timeleft;
-	if (GetMapTimeLeft(timeleft))
-	{
-		new mins, secs;
-
-		if (timeleft > 0)
-		{
-			mins = timeleft / 60;
-			secs = timeleft % 60;
-			FormatEx(finalOutput, sizeof(finalOutput), "Time left: \"%02d:%02d\" Score: \"%d:%d\" Map: \"%s\" Players: \"%d\"", mins, secs, blueScore, redScore, map, clientCount);
-		}
-		else
-		{
-			FormatEx(finalOutput, sizeof(finalOutput), "Time left: \"00:00\" Score: \"%d:%d\" Map: \"%s\" Players: \"%d\"", mins, secs, blueScore, redScore, map, clientCount);
-		}
-	}
-	ReplyToCommand(client, finalOutput);
-	return Plugin_Handled;
 }
 
 public Action:Listener_Pause(client, const String:command[], argc)
