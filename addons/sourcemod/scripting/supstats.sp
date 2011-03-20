@@ -14,8 +14,6 @@
  */
 #include <sourcemod>
 
-new Handle:hLive = INVALID_HANDLE; 
-new bool:live = false;
 new bool:isPaused;
 
 public Plugin:myinfo =
@@ -32,9 +30,10 @@ public OnPluginStart()
 	HookEvent("item_pickup", Event_ItemPickup);
 	HookEvent("player_hurt", Event_PlayerHurt);
 	HookEvent("player_healed", Event_PlayerHealed);
-	
+
 	AddCommandListener(Listener_Pause, "pause");
-	HookConVarChange(hLive, handler_LiveChange);
+
+	PrintToChatAll("\x01\x03Logging supplemental statistics.");
 }
 
 
@@ -50,16 +49,8 @@ public Action:Listener_Pause(client, const String:command[], argc)
 	return Plugin_Continue;
 }
 
-public handler_LiveChange(Handle:convar, const String:oldValue[], const String:newValue[])
-{
-  live = (StringToInt(newValue) == 1);
-}
-
 public Event_ItemPickup(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!live)
-		return;
-
 	decl String:playerName[32];
 	decl String:playerSteamId[64];
 	decl String:playerTeam[64];
@@ -82,9 +73,6 @@ public Event_ItemPickup(Handle:event, const String:name[], bool:dontBroadcast)
 
 public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!live)
-		return;
-
 	decl String:patientName[32];
 	decl String:healerName[32];
 	decl String:patientSteamId[64];
@@ -120,9 +108,6 @@ public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
 
 public Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!live)
-		return;
-
 	decl String:clientname[32];
 	decl String:steamid[64];
 	decl String:team[64];
