@@ -16,12 +16,12 @@ new Handle:hLive = INVALID_HANDLE;
 // Code
 public OnPluginStart() {
   hLive = FindConVar("soap_live");
-  RegConsoleCmd("tournament_info", Command_TournamentInfo, "Gets the remaining time and score for the current match.");
+  RegServerCmd("tournament_info", Command_TournamentInfo, "Gets the remaining time and score for the current match.");
 }
 
-public Action:Command_TournamentInfo(client, args) {
+public Action:Command_TournamentInfo(args) {
   if (hLive != INVALID_HANDLE && GetConVarInt(hLive) == 0) {
-    ReplyToCommand(client, "Tournament is not live");
+    PrintToServer("Tournament is not live");
     return Plugin_Handled;
   }
 
@@ -34,7 +34,7 @@ public Action:Command_TournamentInfo(client, args) {
   finalOutput[0] = 0;
   
   FormatEx(finalOutput, sizeof(finalOutput), "Timeleft: \"%02d:%02d\", Score: \"%d:%d\"", mins, secs, blueScore, redScore);
-  ReplyToCommand(client, finalOutput);
+  PrintToServer(finalOutput);
   
   return Plugin_Handled;
 }
