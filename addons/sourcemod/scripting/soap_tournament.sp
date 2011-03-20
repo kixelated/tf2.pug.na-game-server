@@ -36,7 +36,7 @@ new bool:teamReadyState[2] = { false, false },
 public OnPluginStart()
 {
   // Live Cvar
-	g_hLive = CreateConVar("soap_live", "1", "Is the match live?", _, true, 0.0, true, 1.0);
+	g_hLive = CreateConVar("soap_live", "1", "Is the match live?", FCVAR_PLUGIN|FCVAR_NOTIFY, true, 0.0, true, 1.0);
 	
 	// Game restart
 	//HookEvent("teamplay_restart_round", GameRestartEvent);

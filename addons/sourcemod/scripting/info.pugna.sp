@@ -11,10 +11,12 @@ public Plugin:myinfo = {
 };
 
 // Variables
+new Handle:hLive = INVALID_HANDLE;
 new String:map[64];
 
 // Code
 public OnPluginStart() {
+  hLive = FindConVar("soap_live");
   RegConsoleCmd("tournament_info", Command_TournamentInfo, "Gets the remaining time and score for the current tournament");
 }
 
@@ -23,9 +25,7 @@ public OnMapStart() {
 }
 
 public Action:Command_TournamentInfo(client, args) {
-  new Handle:hLive = FindConVar("soap_live");
-	
-  if (hLive == INVALID_HANDLE || GetConVarInt(hLive) == 0) {
+  if (hLive != INVALID_HANDLE && GetConVarInt(hLive) == 0) {
     ReplyToCommand(client, "Tournament is not live");
     return Plugin_Handled;
   }

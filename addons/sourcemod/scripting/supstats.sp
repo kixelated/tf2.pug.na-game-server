@@ -14,7 +14,8 @@
  */
 #include <sourcemod>
 
-new live = 0;
+new Handle:hLive = INVALID_HANDLE; 
+new bool:live = false;
 new bool:isPaused;
 
 public Plugin:myinfo =
@@ -31,10 +32,11 @@ public OnPluginStart()
 	HookEvent("item_pickup", Event_ItemPickup);
 	HookEvent("player_hurt", Event_PlayerHurt);
 	HookEvent("player_healed", Event_PlayerHealed);
-	HookEvent("teamplay_round_start", Event_RoundStart);
-	HookEvent("teamplay_win_panel", Event_WinPanel);
+	
 	AddCommandListener(Listener_Pause, "pause");
+	HookConVarChange(hLive, handler_LiveChange);
 }
+
 
 public Action:Listener_Pause(client, const String:command[], argc)
 {
@@ -48,9 +50,14 @@ public Action:Listener_Pause(client, const String:command[], argc)
 	return Plugin_Continue;
 }
 
+public handler_LiveChange(Handle:convar, const String:oldValue[], const String:newValue[])
+{
+  live = (StringToInt(newValue) == 1);
+}
+
 public Event_ItemPickup(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if(live != 1)
+	if (!live)
 		return;
 
 	decl String:playerName[32];
@@ -75,7 +82,7 @@ public Event_ItemPickup(Handle:event, const String:name[], bool:dontBroadcast)
 
 public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if(live != 1)
+	if (!live)
 		return;
 
 	decl String:patientName[32];
@@ -113,7 +120,7 @@ public Event_PlayerHealed(Handle:event, const String:name[], bool:dontBroadcast)
 
 public Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if(live != 1)
+	if (!live)
 		return;
 
 	decl String:clientname[32];
@@ -152,21 +159,4 @@ String:GetPlayerTeam(teamIndex)
 	}
 	
 	return team;
-}
-
-public Action:Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
-{
-    if(live == -1)
-    {
-        live = 0
-    }
-    else
-    {
-        live = 1;
-    }
-}
-
-public Action:Event_WinPanel(Handle:event, const String:name[], bool:dontBroadcast)
-{
-    live = 0;
 }
