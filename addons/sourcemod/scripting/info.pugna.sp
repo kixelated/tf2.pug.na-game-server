@@ -33,8 +33,8 @@ public Action:Command_TournamentInfo(client, args) {
   new blueScore = GetTeamScore(3), redScore = GetTeamScore(2);
   new clientCount = GetClientCount(false);
 
-  new timeleft = GetMapTimeLeft(timeleft);
-  if (!timeleft || timeleft < 0) { timeleft = 0; } 
+  new timeleft; 
+  if (!GetMapTimeLeft(timeleft) || timeleft < 0) { timeleft = 0; } 
   new mins = timeleft / 60, secs = timeleft % 60;
   
   decl String:finalOutput[1024];
