@@ -9,8 +9,4 @@ Configs
 	"cfg/cevo_koth.cfg"       "CEVO Koth"
   "cfg/cevo_ctf.cfg"	      "CEVO CTF"
   "cfg/cevo_stopwatch.cfg"  "CEVO Stopwatch"
-  "cfg/esl_1v1.cfg"         "ESL 1v1"
-  "cfg/esl_push.cfg"        "ESL Push"
-  "cfg/esl_ctf.cfg"         "ESL CTF"
-  "cfg/esl_stopwatch.cfg"   "ESL Stopwatch"
 }
