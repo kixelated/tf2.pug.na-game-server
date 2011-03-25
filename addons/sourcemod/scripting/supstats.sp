@@ -34,6 +34,9 @@ public OnPluginStart()
 	AddCommandListener(Listener_Pause, "pause");
 
 	PrintToChatAll("\x01\x03Logging supplemental statistics.");
+	new String:map[64];
+	GetCurrentMap(map, sizeof(map));
+	LogToGame("Loading map \"%s\"", map);
 }
 
 
