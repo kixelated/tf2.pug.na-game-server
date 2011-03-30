@@ -17,7 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
- 
+#include <sdktools>
 #include <sourcemod>
 #include <menus>
 #include <socket>
@@ -51,6 +51,23 @@ public OnPluginStart()
 	
 	AddCommandListener(ListenCommand, "say");
 	AddCommandListener(ListenCommand, "say_team");
+	
+	HookEvent("teamplay_game_over", Event_TeamplayGameOver);
+	HookEvent("tf_game_over", Event_TeamplayGameOver);
+}
+
+public Event_TeamplayGameOver(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	new blueScore = GetTeamScore(3);
+	new redScore = GetTeamScore(2);
+
+	decl String:query[192];
+	Format(query, sizeof(query), "!gameover %d:%d %s:%d", blueScore, redScore, serverIP, port);
+	SendDataToBot(query);
+	if (blueScore == 0 || redScore == 0)
+		PrintToChatAll("\x01\x03lol raped. Who was the captain of that game? Someone needs to be restricted.", blueScore, redScore);
+	else
+		PrintToChatAll("\x01\x03PUG ends with the score %s to %s.", blueScore, redScore);
 }
 
 public SubMenuHandler(Handle:subMenu, MenuAction:action, client, selection)
@@ -145,4 +162,4 @@ public SendDataToBot(String:query[])
 	Format(socketData, sizeof(socketData), "%s", query);
 	SocketConnect(socket, OnSocketConnected, OnSocketReceive, OnSocketDisconnected, botAddress, botPort)
 	LogMessage("Sent sub data to %s:%d Message: %s", botAddress, botPort, query);
-} 
+}
