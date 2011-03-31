@@ -54,6 +54,8 @@ public OnPluginStart()
 	
 	HookEvent("teamplay_game_over", Event_TeamplayGameOver);
 	HookEvent("tf_game_over", Event_TeamplayGameOver);
+	
+	PrintToChatAll("\x01\x03Say !needsub to call for a sub.");
 }
 
 public Event_TeamplayGameOver(Handle:event, const String:name[], bool:dontBroadcast)
@@ -62,12 +64,12 @@ public Event_TeamplayGameOver(Handle:event, const String:name[], bool:dontBroadc
 	new redScore = GetTeamScore(2);
 
 	decl String:query[192];
-	Format(query, sizeof(query), "!gameover %d:%d %s:%d", blueScore, redScore, serverIP, port);
+	Format(query, sizeof(query), "!gameover %d:%d %s:%s", blueScore, redScore, serverIP, port);
 	SendDataToBot(query);
-	if (blueScore == 0 || redScore == 0)
+	if ((blueScore == 0 || redScore == 0) && (redScore == 5 || blueScore == 5))
 		PrintToChatAll("\x01\x03lol raped. Who was the captain of that game? Someone needs to be restricted.", blueScore, redScore);
 	else
-		PrintToChatAll("\x01\x03PUG ends with the score %s to %s.", blueScore, redScore);
+		PrintToChatAll("\x01\x03PUG ends with the score %d to %d.", blueScore, redScore);
 }
 
 public SubMenuHandler(Handle:subMenu, MenuAction:action, client, selection)
