@@ -9,11 +9,14 @@ cp_gullywash_pro
 cp_obscure_final
 cp_snakewater_rc2
 koth_ashville_rc1
-cp_antiquity_b3
 cp_bazillion_rc2
-cp_crossroads_b4a
+cp_indulge
 cp_integrity_a2
-cp_mainline_rc5
+cp_mainline_rc6
 cp_metalworks_b13
+cp_process_a2
+cp_stark_b2
 cp_warmfront
 ctf_turbine_pro_rc1
+koth_peaks_b4b
+koth_stark_b1
