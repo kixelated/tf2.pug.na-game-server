@@ -29,7 +29,7 @@ public OnPluginStart() {
   hExtendTime = CreateConVar("pugna_extend_time", "10", "Amount of time added to the map time limit on extend. (minutes)", _, true, 1.0, false, 0.0);
   hExtendMax = CreateConVar("pugna_extend_max", "2", "Maximum number of extensions.", _, true, 0.0, false, 0.0);
 
-  AutoExecConfig(true, "pugna.cfg")
+  AutoExecConfig(true, "tf2pug")
 
   CreateTimer(20.0, CheckTime, _, TIMER_REPEAT);
   HookEvent("player_say", Event_PlayerSay);
