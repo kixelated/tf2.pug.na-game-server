@@ -1,6 +1,9 @@
 #include <sourcemod>
 #include <sdktools>
 
+#define TF_TEAM_BLU	3
+#define TF_TEAM_RED	2
+
 // Convars
 new Handle:hExtendThreshold;
 new Handle:hCancelThreshold;
@@ -34,7 +37,7 @@ public OnPluginStart() {
   RegConsoleCmd("sm_extend", Command_Extend);
   RegConsoleCmd("sm_cancel", Command_Cancel);
 
-  CreateTimer(20.0, CheckTime, _, TIMER_REPEAT);
+  CreateTimer(20.0, Timer_CheckRemaining, _, TIMER_REPEAT);
 }
 
 public OnMapStart() {
@@ -42,7 +45,7 @@ public OnMapStart() {
   extendCancel = false;
 }
 
-public Action:CheckTime(Handle:timer) {
+public Action:Timer_CheckRemaining(Handle:timer) {
   new timeLeft; GetMapTimeLeft(timeLeft);
   new timeLimit; GetMapTimeLimit(timeLimit);
   new extendThreshold = GetConVarInt(hExtendThreshold);
@@ -64,7 +67,7 @@ public Action:Command_Extend(client, args) {
   new client_team = GetClientTeam(client);
   new String:client_name[32]; GetClientName(client, client_name, sizeof(client_name));
   
-  if (client_team == 2 || client_team == 3) {
+  if (client_team == TF_TEAM_BLU || client_team == TF_TEAM_RED) {
     new extendThreshold = GetConVarInt(hExtendThreshold);
     new timeLeft; GetMapTimeLeft(timeLeft);
     new timeLimit; GetMapTimeLimit(timeLimit);
@@ -85,7 +88,7 @@ public Action:Command_Cancel(client, args) {
   new client_team = GetClientTeam(client);
   new String:client_name[32]; GetClientName(client, client_name, sizeof(client_name));
 
-  if (client_team == 2 || client_team == 3) {
+  if (client_team == TF_TEAM_BLU || client_team == TF_TEAM_RED) {
     new cancelThreshold = GetConVarInt(hCancelThreshold);
     
     if (extendCancel) {
