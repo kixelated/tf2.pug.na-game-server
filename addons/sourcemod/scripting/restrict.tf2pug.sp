@@ -182,15 +182,14 @@ public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
       
         if (team == GetClientTeam(client)) {
           new String:player_name[32]; GetClientName(player, player_name, sizeof(player_name));
-          PrintToChatAll("A vote is in progress to restrict %s from off-classing.", player_name);
-        
+
           new Handle:menu_vote = CreateMenu(Menu_VoteRestrict);
           SetVoteResultCallback(menu, Menu_VoteRestrictResults); // Set the callback to handle the results
           
           SetMenuTitle(menu_vote, "Restrict %s from off-classing?", player_name);
           AddMenuItem(menu_vote, info, "Yes");
           AddMenuItem(menu_vote, "0", "No");
-          SetMenuExitButton(menu, false);
+          SetMenuExitButton(menu_vote, false);
           
           new clients[32];
           new num = 0;
@@ -200,7 +199,7 @@ public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
             if (IsClientInGame(i) && GetClientTeam(i) == team && i != client && i != player) { clients[num++] = i; }
           }
           
-          if (num > 0) { VoteMenu(menu, clients, num, 20); }
+          if (num > 0) { VoteMenu(menu_vote, clients, num, 20); }
         }
       }
     }
