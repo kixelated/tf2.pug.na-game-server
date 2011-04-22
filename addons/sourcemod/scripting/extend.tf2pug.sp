@@ -24,15 +24,17 @@ public Plugin:myinfo = {
 
 // Code
 public OnPluginStart() {
-  hExtendThreshold = CreateConVar("pugna_extend_threshold", "140", "Maximum amount of time remaining before extends can be triggered. (seconds)", _, true, 0.0, false, 0.0);
-  hCancelThreshold = CreateConVar("pugna_cancel_threshold", "140", "Maximum amount of time after an extend before a cancel can occur. (seconds)", _, true, 0.0, false, 0.0);
-  hExtendTime = CreateConVar("pugna_extend_time", "10", "Amount of time added to the map time limit on extend. (minutes)", _, true, 1.0, false, 0.0);
-  hExtendMax = CreateConVar("pugna_extend_max", "2", "Maximum number of extensions.", _, true, 0.0, false, 0.0);
+  hExtendThreshold = CreateConVar("tf2pug_extend_threshold", "140", "Maximum amount of time remaining before extends can be triggered. (seconds)", _, true, 0.0, false, 0.0);
+  hCancelThreshold = CreateConVar("tf2pug_cancel_threshold", "140", "Maximum amount of time after an extend before a cancel can occur. (seconds)", _, true, 0.0, false, 0.0);
+  hExtendTime = CreateConVar("tf2pug_extend_time", "10", "Amount of time added to the map time limit on extend. (minutes)", _, true, 1.0, false, 0.0);
+  hExtendMax = CreateConVar("tf2pug_extend_max", "2", "Maximum number of extensions.", _, true, 0.0, false, 0.0);
 
-  AutoExecConfig(true, "tf2pug")
+  AutoExecConfig(true, "tf2pug");
+  
+  RegConsoleCmd("sm_extend", Command_Extend);
+  RegConsoleCmd("sm_cancel", Command_Cancel);
 
   CreateTimer(20.0, CheckTime, _, TIMER_REPEAT);
-  HookEvent("player_say", Event_PlayerSay);
 }
 
 public OnMapStart() {
@@ -49,7 +51,7 @@ public Action:CheckTime(Handle:timer) {
     new blueScore = GetTeamScore(3);
     new redScore = GetTeamScore(2);
   
-    if (blueScore == redScore && extendMatch()) {
+    if (blueScore == redScore && ExtendMatch()) {
       PrintToChatAll("Stalemate detected, adding %i minutes overtime.", GetConVarInt(hExtendTime));
     } else if ((GetTime() - lastExtendMessage) > extendThreshold) {
       PrintToChatAll("%i minutes left in the match. Type \"!extend\" in chat to increase the time limit.", extendThreshold / 60);
@@ -58,49 +60,48 @@ public Action:CheckTime(Handle:timer) {
   }
 }
 
-public Action:Event_PlayerSay(Handle:event, const String:name[], bool:dontBroadcast) {
-  decl String:userText[192];
-  userText[0] = '\0';
-  if (!GetEventString(event, "text", userText, 192)) {
-    return Plugin_Continue;
-  }
-  
-  new client = GetClientOfUserId(GetEventInt(event, "userid"));
+public Action:Command_Extend(client, args) {
   new client_team = GetClientTeam(client);
-  new String:client_name[32];
+  new String:client_name[32]; GetClientName(client, client_name, sizeof(client_name));
   
-  GetClientName(client, client_name, sizeof(client_name));
-  
-  if (StrContains(userText, "!extend") == 0) { 
+  if (client_team == 2 || client_team == 3) {
     new extendThreshold = GetConVarInt(hExtendThreshold);
     new timeLeft; GetMapTimeLeft(timeLeft);
     new timeLimit; GetMapTimeLimit(timeLimit);
-  
+
     if (extendCancel) {
       PrintToChatAll("The extention was already canceled.");
-    } else if (timeLimit != 0 && timeLeft <= extendThreshold && extendMatch()) {
+    } else if (timeLimit != 0 && timeLeft <= extendThreshold && ExtendMatch()) {
       PrintToChatAll("Match extended %i minutes by %s.", GetConVarInt(hExtendTime), client_name);
     } else {
       PrintToChat(client, "You can only extend with %i minutes left in the match.", extendThreshold / 60);
     }
   }
-
-  if (StrContains(userText, "!cancel") == 0 && (client_team == 2 || client_team == 3)) { 
-    new cancelThreshold = GetConVarInt(hCancelThreshold);
   
+  return Plugin_Handled;
+}
+
+public Action:Command_Cancel(client, args) {
+  new client_team = GetClientTeam(client);
+  new String:client_name[32]; GetClientName(client, client_name, sizeof(client_name));
+
+  if (client_team == 2 || client_team == 3) {
+    new cancelThreshold = GetConVarInt(hCancelThreshold);
+    
     if (extendCancel) {
       PrintToChatAll("The extention was already canceled.");
-    } else if ((GetTime() - lastExtend) <= cancelThreshold && cancelMatch()) {
+    } else if ((GetTime() - lastExtend) <= cancelThreshold && CancelMatch()) {
       PrintToChatAll("Extend canceled by %s", client_name);
     } else {
       PrintToChat(client, "You can only cancel up to %i minutes after an extension.", cancelThreshold / 60);
     }
   }
-
-  return Plugin_Continue;  
+  
+  return Plugin_Handled;
 }
 
-public extendMatch() {
+
+public ExtendMatch() {
   new extendMax = GetConVarInt(hExtendMax);
   
   if (extendCount >= extendMax || extendCancel) {
@@ -119,10 +120,10 @@ public extendMatch() {
     }
     
     return true;
-  } 
+  }
 }
 
-public cancelMatch() {
+public CancelMatch() {
   extendCancel = true;
 
   if (extendCount > 0) {
