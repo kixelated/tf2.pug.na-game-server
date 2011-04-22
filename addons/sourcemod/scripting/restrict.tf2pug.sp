@@ -37,7 +37,6 @@ public OnPluginStart() {
   RegConsoleCmd("sm_restrict", Command_Restrict);
 
   HookEvent("player_changeclass", Event_PlayerClass);
-  HookEvent("player_spawn", Event_PlayerSpawn);
   
   classRestriction[0] = INVALID_HANDLE;
   classRestriction[TF_CLASS_SCOUT] =    CreateConVar("tf2pug_restrict_scout",    "0", "Prevent player from selecting scout if restricted.");
@@ -85,13 +84,15 @@ public Action:Command_Restrict(client, args) {
           GetClientName(i, player_name, sizeof(player_name));
           IntToString(i, player_i, 2);
           
-          AddMenuItem(menu, player_name, player_i);
+          AddMenuItem(menu, player_i, player_name);
         }
       }
     }
+    
+    DisplayMenu(menu, client, 20);
   }
   
-  return Plugin_Continue;  
+  return Plugin_Handled;
 }
 
 public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
@@ -117,7 +118,9 @@ public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
 
             new i;            
             for (i = 9; i > 0 && (isClassRestricted(i) || isClassFull(i, player_team)); --i) { }
+            
             playerClass[player] = i;
+            TF2_SetPlayerClass(client, TFClassType:i);
           }
         }
       }
@@ -137,18 +140,6 @@ public Event_PlayerClass(Handle:event, const String:name[], bool:dontBroadcast) 
     TF2_SetPlayerClass(client, TFClassType:playerClass[client]);
   } else {
     playerClass[client] = client_class;
-  }
-}
-
-public Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast) {
-  new client = GetClientOfUserId(GetEventInt(event, "userid"));
-  new client_class = GetEventInt(event, "class");
-  
-  if (isRestricted(client) && isClassRestricted(client_class)) {
-    PrintToChat(client, "You have been restricted from playing that class.");
-    
-    TF2_SetPlayerClass(client, TFClassType:playerClass[client]);
-    TF2_RespawnPlayer(client); 
   }
 }
 
