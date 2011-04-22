@@ -149,18 +149,20 @@ public Action:Command_Restrict(client, args) {
     new String:player_name[32];
     new String:player_i[2];
     
+    new count = 0;
     for (new i = 1; i < MaxClients; ++i) {
       if (IsClientInGame(i)) {
         if (GetClientTeam(i) == client_team && i != client) {
           GetClientName(i, player_name, sizeof(player_name));
           IntToString(i, player_i, 2);
           
+          ++count;
           AddMenuItem(menu, player_i, player_name); // Add each player on the team to the menu
         }
       }
     }
     
-    DisplayMenu(menu, client, 20);
+    if (count > 0) { DisplayMenu(menu, client, 20); }
   }
   
   return Plugin_Handled;
@@ -199,7 +201,7 @@ public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
             if (IsClientInGame(i) && GetClientTeam(i) == team && i != client && i != player) { clients[num++] = i; }
           }
           
-          VoteMenu(menu, clients, num, 20);
+          if (num > 0) { VoteMenu(menu, clients, num, 20); }
         }
       }
     }
