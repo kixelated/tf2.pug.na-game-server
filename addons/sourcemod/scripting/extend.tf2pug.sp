@@ -73,7 +73,7 @@ public Action:Command_Extend(client, args) {
     new timeLimit; GetMapTimeLimit(timeLimit);
 
     if (extendCancel) {
-      PrintToChatAll("The extention was already canceled.");
+      PrintToChatAll("The extension was already canceled.");
     } else if (timeLimit != 0 && timeLeft <= extendThreshold && ExtendMatch()) {
       PrintToChatAll("Match extended %i minutes by %s.", GetConVarInt(hExtendTime), client_name);
     } else {
@@ -92,7 +92,7 @@ public Action:Command_Cancel(client, args) {
     new cancelThreshold = GetConVarInt(hCancelThreshold);
     
     if (extendCancel) {
-      PrintToChatAll("The extention was already canceled.");
+      PrintToChatAll("The extension was already canceled.");
     } else if ((GetTime() - lastExtend) <= cancelThreshold && CancelMatch()) {
       PrintToChatAll("Extend canceled by %s", client_name);
     } else {
