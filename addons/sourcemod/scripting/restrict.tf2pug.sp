@@ -16,12 +16,17 @@
 #define TF_CLASS_SPY      8
 #define TF_CLASS_UNKNOWN  0
 
-// Variables
-new bool:playerRestriction[32];
-new playerClass[32];
+// Constants
+new String:noSounds[10][24] = { "",  "vo/scout_no03.wav",   "vo/sniper_no04.wav", "vo/soldier_no01.wav",
+                                      "vo/demoman_no03.wav", "vo/medic_no03.wav",  "vo/heavy_no02.wav",
+                                      "vo/pyro_no01.wav",    "vo/spy_no02.wav",    "vo/engineer_no03.wav" };
 
-new Handle:classRestriction[10];
-new Handle:classLimit[10];
+// Variables
+new bool:playerRestriction[32]; // Restriction status for each client
+new playerClass[32]; // The last selected (valid) class for each client
+
+new Handle:classRestriction[10]; // cvar for restricted classes
+new Handle:classLimit[10]; // cvar for class limits (uses tournament settings)
 
 // Plugin Info
 public Plugin:myinfo = {
@@ -37,6 +42,8 @@ public OnPluginStart() {
   RegConsoleCmd("sm_restrict", Command_Restrict);
 
   HookEvent("player_changeclass", Event_PlayerClass);
+  HookEvent("player_spawn",       Event_PlayerClass);
+  HookEvent("player_team",        Event_PlayerClass);
   
   classRestriction[0] = INVALID_HANDLE;
   classRestriction[TF_CLASS_SCOUT] =    CreateConVar("tf2pug_restrict_scout",    "0", "Prevent player from selecting scout if restricted.");
@@ -62,84 +69,50 @@ public OnPluginStart() {
 }
 
 public OnMapStart() {
+  // Clear the client arrays
   for (new i = 1; i < MaxClients; ++i) { 
     playerRestriction[i] = false; 
     playerClass[i] = TF_CLASS_UNKNOWN;
   }
 }
 
-public Action:Command_Restrict(client, args) {
-  new client_team = GetClientTeam(client);
-  
-  if (client_team == TF_TEAM_BLU || client_team == TF_TEAM_RED) {
-    new Handle:menu = CreateMenu(Menu_Restrict);
-    SetMenuTitle(menu, "Who would you like to restrict from off-classing?");
-    
-    new String:player_name[32];
-    new String:player_i[2];
-    
-    for (new i = 1; i < MaxClients; ++i) {
-      if (IsClientInGame(i)) {
-        if (GetClientTeam(i) == client_team && i != client) {
-          GetClientName(i, player_name, sizeof(player_name));
-          IntToString(i, player_i, 2);
-          
-          AddMenuItem(menu, player_i, player_name);
-        }
-      }
-    }
-    
-    DisplayMenu(menu, client, 20);
-  }
-  
-  return Plugin_Handled;
-}
-
-public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
-  new client = param1;
-
-  if (action == MenuAction_Select) {
-    new String:info[2];
-    
-    if (GetMenuItem(menu, param2, info, sizeof(info))) {
-      new player = StringToInt(info);
-
-      if (IsClientInGame(player)) {
-        new player_team = GetClientTeam(player);
-        new client_team = GetClientTeam(client);
-      
-        if (player_team == client_team) {
-          new String:client_name[32]; GetClientName(client, client_name, sizeof(client_name));
-          new String:player_name[32]; GetClientName(player, player_name, sizeof(player_name));
-
-          if (!playerRestriction[player]) {
-            playerRestriction[player] = true;
-            PrintToChatAll("%s was restricted by %s", player_name, client_name);
-
-            new i;            
-            for (i = 9; i > 0 && (isClassRestricted(i) || isClassFull(i, player_team)); --i) { }
-            
-            playerClass[player] = i;
-            TF2_SetPlayerClass(client, TFClassType:i);
-          }
-        }
-      }
-    }
-  } else if (action == MenuAction_Cancel || action == MenuAction_End) {
-    CloseHandle(menu);
-  }
+public OnClientDisconnect(client) {
+  playerRestriction[client] = false; 
+  playerClass[client] = TF_CLASS_UNKNOWN;
 }
 
 public Event_PlayerClass(Handle:event, const String:name[], bool:dontBroadcast) {
   new client = GetClientOfUserId(GetEventInt(event, "userid"));
+  new client_team = GetClientTeam(client);
   new client_class = GetEventInt(event, "class");
   
   if (isRestricted(client) && isClassRestricted(client_class)) {
-    PrintToChat(client, "You have been restricted from playing that class.");
+    ShowVGUIPanel(client, client_team == TF_TEAM_BLU ? "class_blue" : "class_red"); // Show class select page
+    EmitSoundToClient(client, noSounds[client_class]); // Make the "no" sounds in the classes' voice
     
-    TF2_SetPlayerClass(client, TFClassType:playerClass[client]);
+    TF2_SetPlayerClass(client, TFClassType:playerClass[client]); // Set the player's class to the last valid one
   } else {
-    playerClass[client] = client_class;
+    playerClass[client] = client_class; // Class is valid, save it for later so we can revert to it
+  }
+}
+
+public restrictPlayer(player) {
+  if (!isRestricted(player)) {
+    new player_team = GetClientTeam(player);
+    new player_class = playerClass[player];
+    
+    if (isClassRestricted(player_class)) {
+      // Player's current class is restricted, find him another one
+      for (player_class = 9; player_class > 1 && (isClassRestricted(player_class) || isClassFull(player_class, player_team)); --player_class) { }
+      
+      playerClass[player] = player_class;
+      TF2_SetPlayerClass(player, TFClassType:player_class);
+    }
+
+    playerRestriction[player] = true;
+    
+    new String:player_name[32]; GetClientName(player, player_name, sizeof(player_name));
+    PrintToChatAll("%s was restricted from off-classing.", player_name);
   }
 }
 
@@ -157,9 +130,97 @@ public isClassFull(class, team) {
   if (team < TF_TEAM_RED || class < TF_CLASS_SCOUT) { return false; }
   
   new limit = GetConVarInt(classLimit[class]);
+  if (limit == -1) { return false; }
+  
   for (new i = 1; i <= MaxClients; i++) {
-    if (IsClientInGame(i) && GetClientTeam(i) == team && _:TF2_GetPlayerClass(i) == class) { --limit; }
-  }    
+    if (IsClientInGame(i) && GetClientTeam(i) == team && playerClass[i] == class) { --limit; }
+  }
   
   return limit > 0;
+}
+
+public Action:Command_Restrict(client, args) {
+  new client_team = GetClientTeam(client);
+  
+  if (client_team == TF_TEAM_BLU || client_team == TF_TEAM_RED) {
+    new Handle:menu = CreateMenu(Menu_Restrict); // Create a menu
+    SetMenuTitle(menu, "Who would you like to restrict from off-classing?");
+    
+    new String:player_name[32];
+    new String:player_i[2];
+    
+    for (new i = 1; i < MaxClients; ++i) {
+      if (IsClientInGame(i)) {
+        if (GetClientTeam(i) == client_team && i != client) {
+          GetClientName(i, player_name, sizeof(player_name));
+          IntToString(i, player_i, 2);
+          
+          AddMenuItem(menu, player_i, player_name); // Add each player on the team to the menu
+        }
+      }
+    }
+    
+    DisplayMenu(menu, client, 20);
+  }
+  
+  return Plugin_Handled;
+}
+
+public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
+  if (IsVoteInProgress()) { return; }
+
+  if (action == MenuAction_Select) {
+    new String:info[2];
+    
+    if (GetMenuItem(menu, param2, info, sizeof(info))) {
+      new client = param1;
+      new player = StringToInt(info);
+
+      if (IsClientInGame(player)) {
+        new team = GetClientTeam(player);
+      
+        if (team == GetClientTeam(client)) {
+          new String:player_name[32]; GetClientName(player, player_name, sizeof(player_name));
+          PrintToChatAll("A vote is in progress to restrict %s from off-classing.", player_name);
+        
+          new Handle:menu_vote = CreateMenu(Menu_VoteRestrict);
+          SetVoteResultCallback(menu, Menu_VoteRestrictResults); // Set the callback to handle the results
+          
+          SetMenuTitle(menu_vote, "Restrict %s from off-classing?", player_name);
+          AddMenuItem(menu_vote, info, "Yes");
+          AddMenuItem(menu_vote, "0", "No");
+          SetMenuExitButton(menu, false);
+          
+          new clients[32];
+          new num = 0;
+          
+          for (new i = 1; i <= MaxClients; i++) {
+            // Show vote for all of the players on the team who are not the caster and player being restricted
+            if (IsClientInGame(i) && GetClientTeam(i) == team && i != client && i != player) { clients[num++] = i; }
+          }
+          
+          VoteMenu(menu, clients, num, 20);
+        }
+      }
+    }
+  } else if (action == MenuAction_Cancel || action == MenuAction_End) {
+    CloseHandle(menu);
+  }
+}
+
+public Menu_VoteRestrict(Handle:menu, MenuAction:action, param1, param2) {
+  if (action == MenuAction_End) { CloseHandle(menu); }
+}
+
+public Menu_VoteRestrictResults(Handle:menu, num_votes, num_clients, const client_info[][2], num_items, const item_info[][2]) {
+  new winner = 0;
+  if (num_items > 1 && (item_info[0][VOTEINFO_ITEM_VOTES] == item_info[1][VOTEINFO_ITEM_VOTES])) {
+	  winner = GetRandomInt(0, 1); // There was a tie, randomly pick a winner
+  }
+
+  new String:result[2];
+  GetMenuItem(menu, item_info[winner][VOTEINFO_ITEM_INDEX], result, sizeof(result));
+  
+  new player = StringToInt(result);
+  if (player > 0) { restrictPlayer(player); }
 }
