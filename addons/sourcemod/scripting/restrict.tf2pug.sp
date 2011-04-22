@@ -106,7 +106,6 @@ public restrictPlayer(player) {
       for (player_class = 9; player_class > 1 && (isClassRestricted(player_class) || isClassFull(player_class, player_team)); --player_class) { }
       
       playerClass[player] = player_class;
-      TF2_SetPlayerClass(player, TFClassType:player_class);
     }
 
     playerRestriction[player] = true;
