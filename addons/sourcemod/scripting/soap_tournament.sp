@@ -76,7 +76,6 @@ StopDeathmatching()
 	if(g_dm == true)
 	{
 		ServerCommand("exec sourcemod/soap_live.cfg");
-		PrintToChatAll("[SOAP] Plugins unloaded.");
 		SetConVarInt(g_hLive, true);
 		g_dm = false;
 	}
@@ -91,7 +90,6 @@ StartDeathmatching()
 	if(g_dm == false)
 	{
 		ServerCommand("exec sourcemod/soap_notlive.cfg");
-		PrintToChatAll("[SOAP] Plugins reloaded.");
 		SetConVarInt(g_hLive, false);
 		g_dm = true;
 	}
