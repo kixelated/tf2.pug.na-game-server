@@ -195,8 +195,8 @@ public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
           new num = 0;
           
           for (new i = 1; i <= MaxClients; i++) {
-            // Show vote for all of the players on the team who are not the caster and player being restricted
-            if (IsClientInGame(i) && GetClientTeam(i) == team && i != client && i != player) { clients[num++] = i; }
+            // Show vote for all of the players on the team
+            if (IsClientInGame(i) && GetClientTeam(i) == team) { clients[num++] = i; }
           }
           
           if (num > 0) { VoteMenu(menu_vote, clients, num, 20); }
