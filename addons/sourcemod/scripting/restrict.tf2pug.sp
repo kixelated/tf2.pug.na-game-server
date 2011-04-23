@@ -106,7 +106,6 @@ public restrictPlayer(player) {
       for (player_class = 9; player_class > 1 && (isClassRestricted(player_class) || isClassFull(player_class, player_team)); --player_class) { }
       
       playerClass[player] = player_class;
-      TF2_SetPlayerClass(player, TFClassType:player_class);
     }
 
     playerRestriction[player] = true;
@@ -149,18 +148,20 @@ public Action:Command_Restrict(client, args) {
     new String:player_name[32];
     new String:player_i[2];
     
+    new count = 0;
     for (new i = 1; i < MaxClients; ++i) {
       if (IsClientInGame(i)) {
         if (GetClientTeam(i) == client_team && i != client) {
           GetClientName(i, player_name, sizeof(player_name));
           IntToString(i, player_i, 2);
           
+          ++count;
           AddMenuItem(menu, player_i, player_name); // Add each player on the team to the menu
         }
       }
     }
     
-    DisplayMenu(menu, client, 20);
+    if (count > 0) { DisplayMenu(menu, client, 20); }
   }
   
   return Plugin_Handled;
@@ -181,15 +182,14 @@ public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
       
         if (team == GetClientTeam(client)) {
           new String:player_name[32]; GetClientName(player, player_name, sizeof(player_name));
-          PrintToChatAll("A vote is in progress to restrict %s from off-classing.", player_name);
-        
+
           new Handle:menu_vote = CreateMenu(Menu_VoteRestrict);
           SetVoteResultCallback(menu, Menu_VoteRestrictResults); // Set the callback to handle the results
           
           SetMenuTitle(menu_vote, "Restrict %s from off-classing?", player_name);
           AddMenuItem(menu_vote, info, "Yes");
           AddMenuItem(menu_vote, "0", "No");
-          SetMenuExitButton(menu, false);
+          SetMenuExitButton(menu_vote, false);
           
           new clients[32];
           new num = 0;
@@ -199,7 +199,7 @@ public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
             if (IsClientInGame(i) && GetClientTeam(i) == team && i != client && i != player) { clients[num++] = i; }
           }
           
-          VoteMenu(menu, clients, num, 20);
+          if (num > 0) { VoteMenu(menu_vote, clients, num, 20); }
         }
       }
     }
