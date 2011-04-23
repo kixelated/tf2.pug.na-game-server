@@ -22,7 +22,7 @@ public Plugin:myinfo = {
   author = "Luke Curley",
   description = "Enables the !extend command and automatically extends a tied game.",
   version = SOURCEMOD_VERSION,
-  url = "http://github.com/qpingu/tf2.pug.na-irc-bot"
+  url = "https://github.com/qpingu/tf2.pug.na-game-server"
 };
 
 // Code

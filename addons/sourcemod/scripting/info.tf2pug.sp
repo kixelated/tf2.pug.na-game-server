@@ -7,7 +7,7 @@ public Plugin:myinfo = {
   author = "Luke Curley",
   description = "Add tournament_info command that returns various information.",
   version = SOURCEMOD_VERSION,
-  url = "http://github.com/qpingu/tf2.pug.na-irc-bot"
+  url = "https://github.com/qpingu/tf2.pug.na-game-server"
 };
 
 // Variables

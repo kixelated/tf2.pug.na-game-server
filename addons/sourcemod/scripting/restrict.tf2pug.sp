@@ -34,7 +34,7 @@ public Plugin:myinfo = {
   author = "Luke Curley",
   description = "Limits off-classing using the !restrict command.",
   version = SOURCEMOD_VERSION,
-  url = "http://github.com/qpingu/tf2.pug.na-irc-bot"
+  url = "https://github.com/qpingu/tf2.pug.na-game-server"
 };
 
 // Code

@@ -13,7 +13,7 @@ public Plugin:myinfo = {
   author = "Luke Curley",
   description = "Communicates with the bot on #tf2.pug.na, sending sub and endgame messages.",
   version = SOURCEMOD_VERSION,
-  url = "http://github.com/qpingu/tf2.pug.na-irc-bot"
+  url = "https://github.com/qpingu/tf2.pug.na-game-server"
 };
 
 // Code
