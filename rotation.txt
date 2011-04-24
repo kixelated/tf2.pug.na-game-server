@@ -15,6 +15,7 @@ koth_ashville_rc1
 koth_pro_viaduct_rc
 
 cp_mainline_rc6
+cp_process_a4
 cp_stark_b2
 cp_well
 ctf_turbine_pro_rc1
