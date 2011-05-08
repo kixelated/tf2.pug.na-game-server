@@ -83,16 +83,19 @@ public OnClientDisconnect(client) {
 
 public Event_PlayerClass(Handle:event, const String:name[], bool:dontBroadcast) {
   new client = GetClientOfUserId(GetEventInt(event, "userid"));
-  new client_team = GetClientTeam(client);
-  new client_class = GetEventInt(event, "class");
-  
-  if (isRestricted(client) && isClassRestricted(client_class)) {
-    ShowVGUIPanel(client, client_team == TF_TEAM_BLU ? "class_blue" : "class_red"); // Show class select page
-    EmitSoundToClient(client, noSounds[client_class]); // Make the "no" sounds in the classes' voice
+
+  if (IsClientInGame(client)) {
+    new client_team = GetClientTeam(client);
+    new client_class = GetEventInt(event, "class");
     
-    TF2_SetPlayerClass(client, TFClassType:playerClass[client]); // Set the player's class to the last valid one
-  } else {
-    playerClass[client] = client_class; // Class is valid, save it for later so we can revert to it
+    if (isRestricted(client) && isClassRestricted(client_class)) {
+      ShowVGUIPanel(client, client_team == TF_TEAM_BLU ? "class_blue" : "class_red"); // Show class select page
+      EmitSoundToClient(client, noSounds[client_class]); // Make the "no" sounds in the classes' voice
+      
+      TF2_SetPlayerClass(client, TFClassType:playerClass[client]); // Set the player's class to the last valid one
+    } else {
+      playerClass[client] = client_class; // Class is valid, save it for later so we can revert to it
+    }
   }
 }
 
