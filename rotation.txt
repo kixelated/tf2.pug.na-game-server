@@ -8,16 +8,13 @@ koth_viaduct
 
 cp_bazillion_rc2
 cp_follower
-cp_freight_final1
 cp_metalworks_b17
+cp_process_a5
 cp_warmfront
 koth_ashville_rc1
 koth_pro_viaduct_rc2
 
-cp_mainline_rc6
+cp_freight_final1
 cp_obscure_final
-cp_process_a4
-cp_stark_b2
 cp_well
 ctf_turbine_pro_rc1
-ctf_wildfire_rc
