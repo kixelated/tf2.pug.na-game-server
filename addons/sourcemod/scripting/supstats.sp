@@ -139,20 +139,30 @@ public Event_PlayerSpawned(Handle:event, const String:name[], bool:dontBroadcast
 	decl String:clientname[32];
 	decl String:steamid[64];
 	decl String:team[64];
-        decl String:className[64];
+        new String:classes[10][64] = {
+                "undefined",
+                "scout",
+                "sniper",
+                "soldier",
+                "demoman",
+                "medic",
+                "heavyweapons",
+                "pyro",
+                "spy",
+                "engineer"
+        }
 
 	new user = GetClientOfUserId(GetEventInt(event, "userid"));
 	new clss = GetEventInt(event, "class");
         GetClientAuthString(user, steamid, sizeof(steamid));
         GetClientName(user, clientname, sizeof(clientname));
         team = GetPlayerTeam(GetClientTeam(user));
-        className = GetPlayerClass(clss);
         LogToGame("\"%s<%d><%s><%s>\" spawned as \"%s\"",
                   clientname,
                   user,
                   steamid,
                   team,
-                  className);
+                  classes[clss]);
 }
 
 String:GetPlayerTeam(teamIndex)
@@ -171,32 +181,3 @@ String:GetPlayerTeam(teamIndex)
 	return team;
 }
 
-String:GetPlayerClass(classIndex)
-{
-        decl String:clss[64];
-        switch (classIndex)
-        {
-                case 1:
-                        clss = "scout";
-                case 2:
-                        clss = "sniper";
-                case 3:
-                        clss = "soldier";
-                case 4:
-                        clss = "demoman";
-                case 5:
-                        clss = "medic";
-                case 6:
-                        clss = "heavyweapons";
-                case 7:
-                        clss = "pyro";
-                case 8:
-                        clss = "spy";
-                case 9:
-                        clss = "engineer";
-                default:
-                        clss = "undefined";
-        }
-
-        return clss;
-}
