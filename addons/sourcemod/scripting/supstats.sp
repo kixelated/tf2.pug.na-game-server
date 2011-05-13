@@ -30,6 +30,7 @@ public OnPluginStart()
 	HookEvent("item_pickup", Event_ItemPickup);
 	HookEvent("player_hurt", Event_PlayerHurt);
 	HookEvent("player_healed", Event_PlayerHealed);
+	HookEvent("player_spawn", Event_PlayerSpawned);
 
 	AddCommandListener(Listener_Pause, "pause");
 
@@ -133,6 +134,37 @@ public Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)
 	}
 }
 
+public Event_PlayerSpawned(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	decl String:clientname[32];
+	decl String:steamid[64];
+	decl String:team[64];
+        new String:classes[10][64] = {
+                "undefined",
+                "scout",
+                "sniper",
+                "soldier",
+                "demoman",
+                "medic",
+                "heavyweapons",
+                "pyro",
+                "spy",
+                "engineer"
+        }
+
+	new user = GetClientOfUserId(GetEventInt(event, "userid"));
+	new clss = GetEventInt(event, "class");
+        GetClientAuthString(user, steamid, sizeof(steamid));
+        GetClientName(user, clientname, sizeof(clientname));
+        team = GetPlayerTeam(GetClientTeam(user));
+        LogToGame("\"%s<%d><%s><%s>\" spawned as \"%s\"",
+                  clientname,
+                  user,
+                  steamid,
+                  team,
+                  classes[clss]);
+}
+
 String:GetPlayerTeam(teamIndex)
 {
 	decl String:team[64];
@@ -145,6 +177,7 @@ String:GetPlayerTeam(teamIndex)
 		default:
 			team = "undefined";
 	}
-	
+
 	return team;
 }
+
