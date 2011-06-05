@@ -8,8 +8,8 @@ koth_viaduct
 
 cp_bazillion_rc2
 cp_follower
-cp_metalworks_b20
-cp_process_a5
+cp_metalworks_b22
+cp_process_b1
 cp_warmfront
 koth_ashville_rc1
 koth_pro_viaduct_rc2
