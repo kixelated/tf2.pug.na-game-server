@@ -29,4 +29,6 @@
   "The Attendant"               "0"
   "Ol' Snaggletooth"            "0"
   "The Familiar Fez"            "0"
+  "The Disciplinary Action"	"0"
+  "Tomislav"			"0"
 }
