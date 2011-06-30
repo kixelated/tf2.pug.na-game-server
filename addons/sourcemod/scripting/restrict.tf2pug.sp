@@ -187,7 +187,7 @@ public Menu_Restrict(Handle:menu, MenuAction:action, param1, param2) {
           new String:player_name[32]; GetClientName(player, player_name, sizeof(player_name));
 
           new Handle:menu_vote = CreateMenu(Menu_VoteRestrict);
-          SetVoteResultCallback(menu, Menu_VoteRestrictResults); // Set the callback to handle the results
+          SetVoteResultCallback(menu_vote, Menu_VoteRestrictResults); // Set the callback to handle the results
           
           SetMenuTitle(menu_vote, "Restrict %s from off-classing?", player_name);
           AddMenuItem(menu_vote, info, "Yes");
