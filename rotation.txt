@@ -2,7 +2,7 @@ cp_badlands
 cp_coldfront
 cp_granary
 cp_gullywash_pro
-cp_snakewater_rc3
+cp_snakewater_rc4
 cp_yukon_final
 koth_viaduct
 
