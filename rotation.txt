@@ -1,20 +1,12 @@
 cp_badlands
-cp_coldfront
 cp_granary
 cp_gullywash_pro
 cp_snakewater_rc4
 cp_yukon_final
-koth_viaduct
-
-cp_bazillion_rc2
-cp_follower
-cp_metalworks_b22
-cp_process_b1
 cp_warmfront
-koth_ashville_rc1
-koth_pro_viaduct_rc2
+koth_pro_viaduct_rc3
 
+cp_process_b2
+koth_ashville_rc1
 cp_freight_final1
 cp_obscure_final
-cp_well
-ctf_turbine_pro_rc1
